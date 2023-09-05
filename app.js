@@ -21,6 +21,8 @@ run();
 const app = express();
 app.use(express.json());
 
+// Returns a JSON object containing the names of all the collections
+// in the database
 app.get("/places", async (req, res) => {
   let collectionArray = await client
     .db("Places")
@@ -32,11 +34,7 @@ app.get("/places", async (req, res) => {
     placeArray.push(place.name);
   }
   placeArray.sort();
-  console.log(placeArray);
-  res.json({ names: placeArray }).status(200);
+  res.send({ names: placeArray }).status(200);
 });
 
-const PORT = process.env.PORT || 6000;
-app.listen(PORT, () => {
-  console.log(`Server started, listening on port ${PORT}!`);
-});
+module.exports = app;
