@@ -1,14 +1,22 @@
 const express = require("express");
-const mongoose = require("mongoose");
+const MongoClient = require("mongodb").MongoClient;
+const assert = require("assert");
 require("dotenv").config();
 
-mongoose.set("strictQuery", false);
-const mongoDB = process.env.MONGODB_URI;
-const main = async () => {
-  await mongoose.connect(mongoDB);
-  console.log("Connected to MongoDB");
+const mongoURI = process.env.MONGODB_URI;
+const client = new MongoClient(mongoURI);
+const run = async () => {
+  try {
+    await client.connect();
+    await client.db("admin").command({ ping: 1 });
+    console.log(
+      "Pinged your deployment. You successfully connected to MongoDB!"
+    );
+  } catch (err) {
+    console.dir;
+  }
 };
-main().catch((err) => console.log(err));
+run();
 
 const app = express();
 app.use(express.json());
