@@ -21,6 +21,21 @@ run();
 const app = express();
 app.use(express.json());
 
+app.get("/places", async (req, res) => {
+  let collectionArray = await client
+    .db("Places")
+    .listCollections({}, { nameOnly: true })
+    .toArray();
+
+  let placeArray = [];
+  for (place of collectionArray) {
+    placeArray.push(place.name);
+  }
+  placeArray.sort();
+  console.log(placeArray);
+  res.json({ names: placeArray }).status(200);
+});
+
 const PORT = process.env.PORT || 6000;
 app.listen(PORT, () => {
   console.log(`Server started, listening on port ${PORT}!`);
