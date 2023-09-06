@@ -1,6 +1,5 @@
 const express = require("express");
 const MongoClient = require("mongodb").MongoClient;
-const assert = require("assert");
 require("dotenv").config();
 
 const mongoURI = process.env.MONGODB_URI;
@@ -21,8 +20,7 @@ run();
 const app = express();
 app.use(express.json());
 
-// Returns a JSON object containing the names of all the collections
-// in the database
+// Returns a JSON object containing the names of all the collections in the database
 app.get("/places", async (req, res) => {
   let collectionArray = await client
     .db("Places")
