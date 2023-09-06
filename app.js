@@ -51,7 +51,7 @@ app.get("/places/:placename", async (req, res) => {
   res.send(stallObj).status(200);
 });
 
-// Returns a JSOB object containing information about the stall in this format:
+// Returns a JSON object containing information about the stall in this format:
 // { stall: stallName, images: [stallImages], halal: stallHalalStatus}
 app.get("/places/:placename/:stallname", async (req, res) => {
   let document = await client
@@ -61,6 +61,17 @@ app.get("/places/:placename/:stallname", async (req, res) => {
     .toArray();
 
   res.send(document[0]).status(200);
+});
+
+// Returns a JSON object containing information about the requested feedback
+app.get("/feedback/:id", async (req, res) => {
+  let feedback = await client
+    .db("Feedback")
+    .collection("Feedback")
+    .find({ id: req.params.id })
+    .toArray();
+
+  res.send(feedback[0]).status(200);
 });
 
 module.exports = app;
