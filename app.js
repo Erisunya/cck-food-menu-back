@@ -74,4 +74,18 @@ app.get("/feedback/:id", async (req, res) => {
   res.send(feedback[0]).status(200);
 });
 
+// Deletes the specified document from the Feedback collection
+app.delete("/feedback/:id", async (req, res) => {
+  try {
+    const deleteResult = await client
+      .db("Feedback")
+      .collection("Feedback")
+      .deleteOne({ id: req.params.id });
+
+    res.send({ deleted: deleteResult.deletedCount > 0 }).status(200);
+  } catch {
+    res.sendStatus(404);
+  }
+});
+
 module.exports = app;

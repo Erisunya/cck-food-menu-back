@@ -122,6 +122,8 @@ describe("DELETE /feedback/:id", () => {
     const deleteResponse = await request(app).delete(
       "/feedback/DELETE Test ID"
     );
+    expect(deleteResponse.status).toEqual(200);
+    expect(deleteResponse.body.deleted).toBeTruthy();
     const getResponse = await request(app).get("/feedback/DELETE Test ID");
     expect(getResponse.status).toEqual(404);
   });
@@ -147,6 +149,7 @@ describe("POST /feedback", () => {
 
   it("should add a document to the Feedback collection", async () => {
     let postResponse = await request(app).post("/feedback").send(feedback);
+    expect(postResponse.status).toEqual(201);
     let getResponse = await request(app).get("/feedback/POST Test ID");
     expect(getResponse.body.name).toBe("POST Test Name");
     expect(getResponse.body.email).toBe("POST Test Email");
