@@ -39,8 +39,9 @@ describe("GET /places/:placename", () => {
 
   it("should return a JSON containing the names of stalls in the collection", async () => {
     const response = await request(app).get("/places/testCollection");
-    expect(response.body).toHaveProperty("stalls");
-    expect(response.body.stalls).toContain("Test Stall 1");
-    expect(response.body.stalls).toContain("Test Stall 2");
+    expect(response.body).toHaveProperty("Test Stall 1");
+    expect(response.body).toHaveProperty("Test Stall 2");
+    expect(response.body["Test Stall 1"]).toContain("Test Link 1");
+    expect(response.body["Test Stall 2"]).toContain("Test Link 2");
   });
 });

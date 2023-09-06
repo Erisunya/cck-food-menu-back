@@ -20,7 +20,7 @@ run();
 const app = express();
 app.use(express.json());
 
-// Returns a JSON object containing the names of all the collections in the database
+// Returns a JSON object containing the sorted names of all the collections in the database
 app.get("/places", async (req, res) => {
   let collectionArray = await client
     .db("Places")
@@ -33,6 +33,22 @@ app.get("/places", async (req, res) => {
   }
   placeArray.sort();
   res.send({ places: placeArray }).status(200);
+});
+
+// Returns an unsorted JSON object containing information about the stalls in this format:
+// { stallName: stallImages}
+app.get("/places/:placename", async (req, res) => {
+  let documentArray = await client
+    .db("Places")
+    .collection(req.params.placename)
+    .find({})
+    .toArray();
+
+  let stallObj = {};
+  for (stallDocument of documentArray) {
+    stallObj[stallDocument.stall] = stallDocument.images;
+  }
+  res.send(stallObj).status(200);
 });
 
 module.exports = app;
