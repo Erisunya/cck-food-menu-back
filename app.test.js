@@ -75,3 +75,31 @@ describe("GET /places/:placename/:stallname", () => {
     expect(response.body.halal).toBe("T");
   });
 });
+
+describe("POST /feedback", () => {
+  const feedback = {
+    id: "POST Test ID",
+    name: "POST Test Name",
+    email: "POST Test Email",
+    telegramHandle: "POST Test Handle",
+    feedback: "POST Test Feedback",
+  };
+
+  afterEach(async () => {
+    await request(app).delete("/feedback/:id");
+  });
+
+  it("should return 201", async () => {
+    const response = await request(app).post("/feedback").send(feedback);
+    expect(response.status).toEqual(201);
+  });
+
+  it("should add a document to the Feedback collection", async () => {
+    let postResponse = await request(app).post("/feedback").send(feedback);
+    let getResponse = await request(app).get("/feedback/POST Test ID");
+    expect(getResponse.body.name).toBe("POST Test Name");
+    expect(getResponse.body.email).toBe("POST Test Email");
+    expect(getResponse.body.telegramHandle).toBe("POST Test Handle");
+    expect(getResponse.body.feedback).toBe("POST Test Feedback");
+  });
+});
