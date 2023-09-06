@@ -32,7 +32,7 @@ app.get("/places", async (req, res) => {
     placeArray.push(place.name);
   }
   placeArray.sort();
-  res.send({ names: placeArray }).status(200);
+  res.send({ places: placeArray }).status(200);
 });
 
 module.exports = app;

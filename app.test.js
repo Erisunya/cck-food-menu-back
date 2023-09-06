@@ -21,7 +21,26 @@ describe("GET /places", () => {
 
   it("should return a JSON containing the names of all the collections", async () => {
     const response = await request(app).get("/places");
-    expect(response.body).toHaveProperty("names");
-    expect(response.body.names).toContain("testCollection");
+    expect(response.body).toHaveProperty("places");
+    expect(response.body.places).toContain("testCollection");
+  });
+});
+
+describe("GET /places/:placename", () => {
+  it("should return 200", async () => {
+    const response = await request(app).get("/places/testCollection");
+    expect(response.status).toEqual(200);
+  });
+
+  it("should return JSON", async () => {
+    const response = await request(app).get("/places/testCollection");
+    expect(response.type).toEqual("application/json");
+  });
+
+  it("should return a JSON containing the names of stalls in the collection", async () => {
+    const response = await request(app).get("/places/testCollection");
+    expect(response.body).toHaveProperty("stalls");
+    expect(response.body.stalls).toContain("Test Stall 1");
+    expect(response.body.stalls).toContain("Test Stall 2");
   });
 });
