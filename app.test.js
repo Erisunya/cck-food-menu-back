@@ -45,3 +45,27 @@ describe("GET /places/:placename", () => {
     expect(response.body["Test Stall 2"]).toContain("Test Link 2");
   });
 });
+
+describe("GET /places/:placename/:stallname", () => {
+  it("should return 200", async () => {
+    const response = await request(app).get(
+      "/places/testCollection/Test Stall 1"
+    );
+    expect(response.status).toEqual(200);
+  });
+
+  it("should return JSON", async () => {
+    const response = await request(app).get(
+      "/places/testCollection/Test Stall 1"
+    );
+    expect(response.type).toEqual("application/json");
+  });
+
+  it("should return a JSON containing the images of the stall menus", async () => {
+    const response = await request(app).get(
+      "/places/testCollection/Test Stall 1"
+    );
+    expect(response.body).toHaveProperty("links");
+    expect(response.body.links).toContain("Test Link 1");
+  });
+});
