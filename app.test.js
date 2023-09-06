@@ -76,6 +76,33 @@ describe("GET /places/:placename/:stallname", () => {
   });
 });
 
+// TODO: describe GET /feedback/:id
+describe("GET /feedback/:id", () => {
+  it("should return 200", async () => {
+    const response = await request(app).get("/feedback/Test ID");
+    expect(response.status).toEqual(200);
+  });
+
+  it("should return JSON", async () => {
+    const response = await request(app).get("/feedback/Test ID");
+    expect(response.type).toEqual("application/json");
+  });
+
+  it("should return a JSON containing the feedback", async () => {
+    const response = await request(app).get("/feedback/Test ID");
+    expect(response.body).toHaveProperty("name");
+    expect(response.body.name).toBe("Test Name");
+    expect(response.body).toHaveProperty("email");
+    expect(response.body.email).toBe("Test Email");
+    expect(response.body).toHaveProperty("telegramHandle");
+    expect(response.body.telegramHandle).toBe("Test Handle");
+    expect(response.body).toHaveProperty("feedback");
+    expect(response.body.feedback).toBe("Test Feedback");
+  });
+});
+
+// TODO: describe DELETE /feedback/:id
+
 describe("POST /feedback", () => {
   const feedback = {
     id: "POST Test ID",
