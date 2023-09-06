@@ -76,7 +76,6 @@ describe("GET /places/:placename/:stallname", () => {
   });
 });
 
-// TODO: describe GET /feedback/:id
 describe("GET /feedback/:id", () => {
   it("should return 200", async () => {
     const response = await request(app).get("/feedback/Test ID");
@@ -101,7 +100,32 @@ describe("GET /feedback/:id", () => {
   });
 });
 
-// TODO: describe DELETE /feedback/:id
+describe("DELETE /feedback/:id", () => {
+  const feedback = {
+    id: "DELETE Test ID",
+    name: "DELETE Test Name",
+    email: "DELETE Test Email",
+    telegramHandle: "DELETE Test Handle",
+    feedback: "DELETE Test Feedback",
+  };
+
+  beforeEach(async () => {
+    await request(app).post("/feedback").send(feedback);
+  });
+
+  it("should return 200", async () => {
+    const response = await request(app).delete("/feedback/DELETE Test ID");
+    expect(response.status).toEqual(200);
+  });
+
+  it("should delete a document from the Feedback collection", async () => {
+    const deleteResponse = await request(app).delete(
+      "/feedback/DELETE Test ID"
+    );
+    const getResponse = await request(app).get("/feedback/DELETE Test ID");
+    expect(getResponse.status).toEqual(404);
+  });
+});
 
 describe("POST /feedback", () => {
   const feedback = {
@@ -113,7 +137,7 @@ describe("POST /feedback", () => {
   };
 
   afterEach(async () => {
-    await request(app).delete("/feedback/:id");
+    await request(app).delete("/feedback/POST Test ID");
   });
 
   it("should return 201", async () => {
