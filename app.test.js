@@ -61,11 +61,17 @@ describe("GET /places/:placename/:stallname", () => {
     expect(response.type).toEqual("application/json");
   });
 
-  it("should return a JSON containing the images of the stall menus", async () => {
+  it("should return a JSON containing information about the stall", async () => {
     const response = await request(app).get(
       "/places/testCollection/Test Stall 1"
     );
-    expect(response.body).toHaveProperty("links");
-    expect(response.body.links).toContain("Test Link 1");
+    expect(response.body).toHaveProperty("stall");
+    expect(response.body.stall).toBe("Test Stall 1");
+
+    expect(response.body).toHaveProperty("images");
+    expect(response.body.images).toContain("Test Link 1");
+
+    expect(response.body).toHaveProperty("halal");
+    expect(response.body.halal).toBe("T");
   });
 });
