@@ -51,4 +51,16 @@ app.get("/places/:placename", async (req, res) => {
   res.send(stallObj).status(200);
 });
 
+// Returns a JSOB object containing information about the stall in this format:
+// { stall: stallName, images: [stallImages], halal: stallHalalStatus}
+app.get("/places/:placename/:stallname", async (req, res) => {
+  let document = await client
+    .db("Places")
+    .collection(req.params.placename)
+    .find({ stall: req.params.stallname })
+    .toArray();
+
+  res.send(document[0]).status(200);
+});
+
 module.exports = app;
