@@ -123,8 +123,9 @@ describe("DELETE /feedback/:id", () => {
       "/feedback/DELETE Test ID"
     );
     expect(deleteResponse.status).toEqual(200);
-    expect(deleteResponse.body.deleted).toBeTruthy();
+    expect(deleteResponse.body.isDeleted).toBeTruthy();
     const getResponse = await request(app).get("/feedback/DELETE Test ID");
+    console.log(getResponse.body);
     expect(getResponse.status).toEqual(404);
   });
 });

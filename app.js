@@ -71,7 +71,11 @@ app.get("/feedback/:id", async (req, res) => {
     .find({ id: req.params.id })
     .toArray();
 
-  res.send(feedback[0]).status(200);
+  if (!feedback.length) {
+    res.status(404).send({ error: "Feedback not found" });
+  } else {
+    res.status(200).send(feedback[0]);
+  }
 });
 
 // Deletes the specified document from the Feedback collection
@@ -82,9 +86,25 @@ app.delete("/feedback/:id", async (req, res) => {
       .collection("Feedback")
       .deleteOne({ id: req.params.id });
 
-    res.send({ deleted: deleteResult.deletedCount > 0 }).status(200);
-  } catch {
-    res.sendStatus(404);
+    res.status(200).send({ isDeleted: deleteResult.deletedCount > 0 });
+  } catch (e) {
+    res.status(404).send({ error: e });
+  }
+});
+
+// Adds the submitted feedback to the Feedback collection
+app.post("/feedback", async (req, res) => {
+  let data = req.body;
+  try {
+    const insertResult = await client
+      .db("Feedback")
+      .collection("Feedback")
+      .insertOne(data);
+
+    let inserted = insertResult.hasOwnProperty("insertedId");
+    res.status(201).send({ isInserted: inserted });
+  } catch (e) {
+    res.status(404).send({ error: e });
   }
 });
 
