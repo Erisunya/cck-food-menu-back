@@ -29,19 +29,20 @@ app.use(function (req, res, next) {
   next();
 });
 
-// Returns a JSON object containing the sorted names of all the collections in the database
+// Returns a JSON object containing the names and images of all the places in the database
 app.get("/places", async (req, res) => {
   let collectionArray = await client
     .db("Places")
-    .listCollections({}, { nameOnly: true })
+    .collection("placesList")
+    .find({})
     .toArray();
 
-  let placeArray = [];
+  let placesObj = {};
   for (place of collectionArray) {
-    placeArray.push(place.name);
+    placesObj[place.name] = place.image;
   }
-  placeArray.sort();
-  res.send({ places: placeArray }).status(200);
+  console.log(placesObj);
+  res.send(placesObj).status(200);
 });
 
 // Returns an unsorted JSON object containing information about the stalls in this format:

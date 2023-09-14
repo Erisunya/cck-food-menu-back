@@ -19,10 +19,13 @@ describe("GET /places", () => {
     expect(response.type).toEqual("application/json");
   });
 
-  it("should return a JSON containing the names of all the collections", async () => {
+  it("should return a JSON containing the names and images of all the collections", async () => {
     const response = await request(app).get("/places");
-    expect(response.body).toHaveProperty("places");
-    expect(response.body.places).toContain("testCollection");
+    // expect(response.body).toHaveProperty("places");
+    // expect(response.body.places).toContain("testCollection");
+
+    expect(response.body).toHaveProperty("Test Place 1");
+    expect(response.body["Test Place 1"]).toContain("Test Image 1");
   });
 });
 
